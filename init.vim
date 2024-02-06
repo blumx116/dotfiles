@@ -37,12 +37,12 @@ augroup END
 
 let g:oscyank_term = 'kitty'
 
-let g:python_host_prog=expand("~/mbig/.nvim-venv/bin/python")
-let g:python3_host_prog=expand("~/mbig/.nvim-venv/bin/python3.9")
+let g:python_host_prog=expand("~/.nvim-venv/bin/python")
+let g:python3_host_prog=expand("~/.nvim-venv/bin/python3.10")
 
 augroup Linters
 		autocmd!
-		autocmd BufWritePost *.py silent! execute ':!~/mbig/.nvim-venv/bin/python3.9 -m black --line-length 88 % && ~/mbig/.nvim-venv/bin/python3.9 -m isort --profile black %' | e
+		autocmd BufWritePost *.py silent! execute ':!~/mbig/.nvim-venv/bin/python3.10 -m black --line-length 88 % && ~/mbig/.nvim-venv/bin/python3.10 -m isort --profile black %' | e
 		autocmd BufWritePost *.html,*.js*,*.css,*.ts* silent! execute ':!npx prettier --write %' | e
 		autocmd BufWritePost *.c,*.cc,*.h,*.cpp,*.tpp silent! execute ':!clang-format -i --style=file %' | e 
 augroup END
