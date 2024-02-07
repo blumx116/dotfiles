@@ -112,8 +112,7 @@ linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/p
 mac_conditional_install "tmux" "brew install tmux"
 
 python3.10 -m venv ~/.nvim-venv
-. ~/.nvim-venv/bin/activate
-python3.10 install pynvim black isort
+. ~/.nvim-venv/bin/activate && python3.10 install pynvim black isort
 
 # --------- Manual Instructions ---------------------
 # Upon nvim bootup
