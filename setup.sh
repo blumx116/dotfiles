@@ -56,7 +56,7 @@ conditional_install() {
 mac_conditional_install () {
 		# argument 1 is the utility name, we'll use 'which' to check if it's installed
 		# argument 2 is the command to run to install the script
-		if [[ $IS_MACOS ]]; then 
+		if [[ $IS_MACOS -eq 1 ]]; then 
 				conditional_install "$@"
 		fi
 }
@@ -64,7 +64,7 @@ mac_conditional_install () {
 linux_conditional_install () {
 		# argument 1 is the utility name, we'll use 'which' to check if it's installed
 		# argument 2 is the command to run to install the script
-		if [[ $IS_LINUX ]]; then 
+		if [[ $IS_LINUX -eq 1 ]]; then 
 				conditional_install "$@"
 		fi
 }
@@ -77,20 +77,24 @@ mac_conditional_install "kitty" "curl -L https://sw.kovidgoyal.net/kitty/install
 mac_conditional_install "brew" "/bin/bash -c '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'"
 
 # add brew to path
-write_once 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.bash_profile
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ $IS_MACOS -eq 1 ]]; then
+	write_once 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.bash_profile
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 # --------- Install Neovim ---------------
 mac_conditional_install nvim "brew install neovim"
 
-if [[ $IS_LINUX ]]; then
+if [[ $IS_LINUX -eq 1 ]]; then
 		chmod +x $SCRIPT_DIR/nvim.appimage
 		write_once "alias nvim=$SCRIPT_DIR/nvim.appimage" ~/.bash_profile
 fi
 
 
 # nvim package manager install
-sh -c 'curl -fLo "$XDG_DATA_HOME"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+if [[ ! -e $XDG_DATA_HOME/nvim/site/autoload/plug.vim ]]; then
+	sh -c 'curl -fLo "$XDG_DATA_HOME"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+fi
 # ag for fzf quick search
 mac_conditional_install "ag" "brew install the_silver_searcher"
 mac_conditional_install "fzf" "brew install fzf"
@@ -99,18 +103,17 @@ linux_conditional_install "fzf" "sudo apt install fzf"
 
 # --------- Install Node, Used By Neovim ------------
 mac_conditional_install "node" "brew install node"
-linux_conditional_install "node" "sudo apt install nodejs"
+linux_conditional_install "node" "curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - && sudo apt-get install nodejs"
 
 # ------- Install Python, Set Up Neovim Env ---------
 mac_conditional_install "python3.10" "brew install python@3.10"
-linux_conditional_install "python3.10" "sudo apt install python3.10"
+linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/ppa; sudo apt install python3.10; sudo apt install python3.10-venv"
 
 # ---------- Install Tmux ---------------------------
 mac_conditional_install "tmux" "brew install tmux"
 
 python3.10 -m venv ~/.nvim-venv
-. ~/.nvim-venv/bin/activate
-python3.10 install pynvim black isort
+. ~/.nvim-venv/bin/activate && python3.10 install pynvim black isort
 
 # --------- Manual Instructions ---------------------
 # Upon nvim bootup
