@@ -8,6 +8,7 @@ IS_LINUX=$(uname -s | grep -q "Linux" && echo 1 || echo 0)
 ln -s $SCRIPT_DIR/.cfg.sh ~/.cfg.sh
 mkdir -p $XDG_DATA_HOME/nvim
 ln -s $SCRIPT_DIR/init.vim $XDG_DATA_HOME/nvim/init.vim
+mkdir -p $XDG_DATA_HOME/nvim
 ln -s $SCRIPT_DIR/kitty.conf $XDG_DATA_HOME/kitty/kitty.conf
 
 # --------- Make Sure That RC Files All Source Each Other-----
@@ -89,7 +90,7 @@ fi
 
 
 # nvim package manager install
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+sh -c 'curl -fLo "$XDG_DATA_HOME"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 # ag for fzf quick search
 mac_conditional_install "ag" "brew install the_silver_searcher"
 mac_conditional_install "fzf" "brew install fzf"
