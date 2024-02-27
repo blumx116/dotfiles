@@ -54,3 +54,11 @@ dd () {
 			v .
 		fi	
 }
+
+alias re_source=". ~/.bash_profile"
+
+alias zshrc="v ~/.zshrc && re_resource"
+alias bashrc="v ~/.bashrc && re_source"
+alias cfgsh="v ~/.cfg.sh && re_source"
+alias bashprof="v ~/.bash_profile && re_source"
+alias profsh="v ~/.prof.sh && re_source"
