@@ -1,5 +1,11 @@
+#!/bin/bash
 set -o errexit # exit on error
 set -o nounset # exit on access undefined variable
+
+# ------- if DEBUG variable is set, print each command -----
+if [[ ! -z "${DEBUG-}" ]]; then 
+	set -o xtrace
+fi
 
 # ---------- Simple Utilities ---------------
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -7,18 +13,19 @@ IS_MACOS=$(uname -s | grep -q "Darwin" && echo 1 || echo 0)
 IS_LINUX=$(uname -s | grep -q "Linux" && echo 1 || echo 0)
 
 # --------- Symlink Configuration Files To Git Repo ---------------
-if [ -z "$XDG_DATA_HOME" ]; then
+if [[ -z "${XDG_DATA_HOME-}" ]]; then
 		echo "XDG_DATA_HOME not set, setting to $HOME/.config"
-		export XDG_DATA_HOME=$HOME/.config
-		mkdir $XDG_DATA_HOME
+		XDG_DATA_HOME=$HOME/.config
+		export XDG_DATA_HOME=$XDG_DATA_HOME
+		mkdir -p $XDG_DATA_HOME
 fi
 
 
-ln -s $SCRIPT_DIR/.cfg.sh ~/.cfg.sh
+ln -sf $SCRIPT_DIR/.cfg.sh ~/.cfg.sh
 mkdir -p $XDG_DATA_HOME/nvim
-ln -s $SCRIPT_DIR/init.vim $XDG_DATA_HOME/nvim/init.vim
-mkdir -p $XDG_DATA_HOME/nvim
-ln -s $SCRIPT_DIR/kitty.conf $XDG_DATA_HOME/kitty/kitty.conf
+ln -sf $SCRIPT_DIR/init.vim $XDG_DATA_HOME/nvim/init.vim
+mkdir -p $XDG_DATA_HOME/kitty
+ln -sf $SCRIPT_DIR/kitty.conf $XDG_DATA_HOME/kitty/kitty.conf
 
 #-----------Make Sure Apt Up To Date if Available--------
 if [[ $IS_LINUX -eq 1 ]]; then
@@ -51,6 +58,8 @@ if [[ -z $(grep "PROJECTS_HOME=" "$HOME/.bash_profile") ]]; then
 fi
 
 
+touch ~/.zshrc
+touch ~/.bashrc
 touch ~/.prof.sh
 touch ~/.cfg.sh
 write_once "source ~/.cfg.sh" $HOME/.bash_profile		#~/.cfg.sh is shared configuration from github
@@ -62,7 +71,9 @@ source $HOME/.bash_profile
 
 # ---------- Simple Utilities ---------------
 conditional_install() {
-		install_path=$(which "$1")
+		# this complicated thing runs which in a subshell to avoid errexit
+		install_path=$(which "$1" 2>/dev/null || echo "") 
+
 		if [[ -z "$install_path" || "$install_path" == *"not found"* ]]; then
 				sh -c "$2"
 		else 
@@ -129,17 +140,19 @@ linux_conditional_install "shellcheck" "sudo apt install shellcheck"
 # ---------- Install Tmux ---------------------------
 mac_conditional_install "tmux" "brew install tmux"
 
-# Install Python 
-python3.10 -m venv ~/.nvim-venv
-. ~/.nvim-venv/bin/activate && python3.10 -m pip install pynvim black isort
 
 # ------- Install Python, Set Up Neovim Env ---------
 mac_conditional_install "python3.10" "brew install python@3.10"
 linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.10 && sudo apt install python3.10-venv"
 linux_conditional_install "libfuse" "sudo apt-get install -y fuse libfuse2"
 
+# Install Python 
+python3.10 -m venv ~/.nvim-venv
+. ~/.nvim-venv/bin/activate && python3.10 -m pip install pynvim black isort
+shopt -s expand_aliases
 source ~/.bash_profile
 
 v +PlugInstall +qall
 v +UpdateRemotePlugins +qall
 v -c "CocInstall coc-json coc-tsserver coc-pyright coc-sh" +qall
+
