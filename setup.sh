@@ -1,12 +1,21 @@
 #!/bin/bash
-( # causes errexit and everything after to be run in a subshell, so errexit doesn't propagate to the outer shell
 set -o errexit # exit on error
 set -o nounset # exit on access undefined variable
+
 
 # ------- if DEBUG variable is set, print each command -----
 if [[ -n "${DEBUG-}" ]]; then 
 	set -o xtrace
 fi
+
+cleanup() {
+		set +o errexit
+		set +o nounset
+		set +o xtrace
+}
+
+trap cleanup EXIT
+
 
 # ---------- Simple Utilities ---------------
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -157,4 +166,3 @@ source ~/.bash_profile
 v +PlugInstall +qall
 v +UpdateRemotePlugins +qall
 v -c "CocInstall coc-json coc-tsserver coc-pyright coc-sh"
-)
