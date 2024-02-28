@@ -1,4 +1,5 @@
 #!/bin/bash
+( # causes errexit and everything after to be run in a subshell, so errexit doesn't propagate to the outer shell
 set -o errexit # exit on error
 set -o nounset # exit on access undefined variable
 
@@ -48,7 +49,8 @@ if [[ -z $(grep "PROJECTS_HOME=" "$HOME/.bash_profile") ]]; then
 		read input_path
 
 		if [ -n "$input_path" ]; then
-				escaped_input_path=$(printf "%s\n" "$input_path" | sed 's/[\\"$]/\\&/g')
+				escaped_input_path=$input_path
+				# escaped_input_path=$(printf "%s\n" "$input_path" | sed 's/[\\"$]/\\&/g')
 				echo "export PROJECTS_HOME=\"$escaped_input_path\"" >> ~/.bash_profile
 				mkdir -p $escaped_input_path
 		else 
@@ -143,7 +145,7 @@ mac_conditional_install "tmux" "brew install tmux"
 
 # ------- Install Python, Set Up Neovim Env ---------
 mac_conditional_install "python3.10" "brew install python@3.10"
-linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.10 && sudo apt install python3.10-venv"
+linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.10-venv"
 linux_conditional_install "libfuse" "sudo apt-get install -y fuse libfuse2"
 
 # Install Python 
@@ -155,4 +157,4 @@ source ~/.bash_profile
 v +PlugInstall +qall
 v +UpdateRemotePlugins +qall
 v -c "CocInstall coc-json coc-tsserver coc-pyright coc-sh" +qall
-
+)
