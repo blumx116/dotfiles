@@ -118,20 +118,23 @@ linux_conditional_install "fzf" "sudo apt install fzf"
 mac_conditional_install "node" "brew install node"
 linux_conditional_install "node" "curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - && sudo apt-get install nodejs"
 
-# ------- Install Python, Set Up Neovim Env ---------
-mac_conditional_install "python3.10" "brew install python@3.10"
-linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.10 && sudo apt install python3.10-venv"
 
 # ---------- Install Tmux ---------------------------
 mac_conditional_install "tmux" "brew install tmux"
 
+# Install Python 
+
 python3.10 -m venv ~/.nvim-venv
 . ~/.nvim-venv/bin/activate && python3.10 -m pip install pynvim black isort
 
+
+# ------- Install Python, Set Up Neovim Env ---------
+mac_conditional_install "python3.10" "brew install python@3.10"
+linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.10 && sudo apt install python3.10-venv"
 linux_conditional_install "libfuse" "sudo apt-get install -y fuse libfuse2"
 
-# --------- Manual Instructions ---------------------
-# Upon nvim bootup
-#	:PlugInstall
-#	:UpdateRemotePlugins
-# 	:CocInstall coc-json coc-tsserver coc-pyright
+source ~/.bash_profile
+
+v +PlugInstall +qall
+v +UpdateRemotePlugins +qall
+v -c "CocInstall coc-json coc-tsserver coc-pyright" +qall
