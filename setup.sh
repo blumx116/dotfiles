@@ -5,11 +5,23 @@ IS_LINUX=$(uname -s | grep -q "Linux" && echo 1 || echo 0)
 
 
 # --------- Symlink Configuration Files To Git Repo ---------------
+if [ -z "$XDG_DATA_HOME" ]; then
+		echo "XDG_DATA_HOME not set, setting to $HOME/.config"
+		export XDG_DATA_HOME=$HOME/.config
+		mkdir $XDG_DATA_HOME
+fi
+
+
 ln -s $SCRIPT_DIR/.cfg.sh ~/.cfg.sh
 mkdir -p $XDG_DATA_HOME/nvim
 ln -s $SCRIPT_DIR/init.vim $XDG_DATA_HOME/nvim/init.vim
 mkdir -p $XDG_DATA_HOME/nvim
 ln -s $SCRIPT_DIR/kitty.conf $XDG_DATA_HOME/kitty/kitty.conf
+
+#-----------Make Sure Apt Up To Date if Available--------
+if [[ $IS_LINUX -eq 1 ]]; then
+		sudo apt update
+fi
 
 # --------- Make Sure That RC Files All Source Each Other-----
 write_once() {
@@ -36,6 +48,8 @@ if [[ -z $(grep "PROJECTS_HOME=" "$HOME/.bash_profile") ]]; then
 fi
 
 
+touch ~/.prof.sh
+touch ~/.cfg.sh
 write_once "source ~/.cfg.sh" $HOME/.bash_profile		#~/.cfg.sh is shared configuration from github
 write_once "source ~/.prof.sh" $HOME/.bash_profile		#~/.prof.sh is machine-specific configuration (possibly from github)e
 write_once "source ~/.bash_profile" $HOME/.bashrc		#~/.bashrc is bash-specific, may be written by env
@@ -47,7 +61,7 @@ source $HOME/.bash_profile
 conditional_install() {
 		install_path=$(which "$1")
 		if [[ -z "$install_path" || "$install_path" == *"not found"* ]]; then
-				$2
+				sh -c "$2"
 		else 
 				echo "Skipping $1 install, already installed at $install_path"
 		fi
@@ -118,4 +132,5 @@ python3.10 -m venv ~/.nvim-venv
 # --------- Manual Instructions ---------------------
 # Upon nvim bootup
 #	:PlugInstall
+#	:UpdateRemotePlugins
 # 	:CocInstall coc-json coc-tsserver coc-pyright
