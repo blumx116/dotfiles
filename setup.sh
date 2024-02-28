@@ -154,5 +154,5 @@ source ~/.bash_profile
 
 v +PlugInstall +qall
 v +UpdateRemotePlugins +qall
-v -c "CocInstall coc-json coc-tsserver coc-pyright coc-sh" +qall
+v -c "CocInstall coc-json coc-tsserver coc-pyright coc-sh"
 
