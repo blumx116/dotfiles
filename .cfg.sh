@@ -30,7 +30,7 @@ fh() {
 ini () {
 		if [[ ! -d ".venv" ]]; then
 			# need to create .venv
-			python3.10 -m venv .venv
+			python3.11 -m venv .venv
 			. .venv/bin/activate
 			if [[ -e "requirements.txt" ]]; then
 				pip install -r requirements.txt

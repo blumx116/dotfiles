@@ -16,7 +16,6 @@ cleanup() {
 
 trap cleanup EXIT
 
-
 # ---------- Simple Utilities ---------------
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 IS_MACOS=$(uname -s | grep -q "Darwin" && echo 1 || echo 0)
@@ -153,13 +152,13 @@ mac_conditional_install "tmux" "brew install tmux"
 
 
 # ------- Install Python, Set Up Neovim Env ---------
-mac_conditional_install "python3.10" "brew install python@3.10"
-linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.10-venv"
+mac_conditional_install "python3.11" "brew install python@3.11"
+linux_conditional_install "python3.11" "sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.11-venv"
 linux_conditional_install "libfuse" "sudo apt-get install -y fuse libfuse2"
 
 # Install Python 
-python3.10 -m venv ~/.nvim-venv
-. ~/.nvim-venv/bin/activate && python3.10 -m pip install pynvim black isort
+python3.11 -m venv ~/.nvim-venv
+. ~/.nvim-venv/bin/activate && python3.11 -m pip install pynvim black isort
 shopt -s expand_aliases
 source ~/.bash_profile
 
