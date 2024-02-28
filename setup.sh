@@ -3,7 +3,7 @@ set -o errexit # exit on error
 set -o nounset # exit on access undefined variable
 
 # ------- if DEBUG variable is set, print each command -----
-if [[ ! -z "${DEBUG-}" ]]; then 
+if [[ -n "${DEBUG-}" ]]; then 
 	set -o xtrace
 fi
 
@@ -15,17 +15,17 @@ IS_LINUX=$(uname -s | grep -q "Linux" && echo 1 || echo 0)
 # --------- Symlink Configuration Files To Git Repo ---------------
 if [[ -z "${XDG_DATA_HOME-}" ]]; then
 		echo "XDG_DATA_HOME not set, setting to $HOME/.config"
-		XDG_DATA_HOME=$HOME/.config
-		export XDG_DATA_HOME=$XDG_DATA_HOME
-		mkdir -p $XDG_DATA_HOME
+		XDG_DATA_HOME="$HOME"/.config
+		export XDG_DATA_HOME="$XDG_DATA_HOME"
+		mkdir -p "$XDG_DATA_HOME"
 fi
 
 
-ln -sf $SCRIPT_DIR/.cfg.sh ~/.cfg.sh
-mkdir -p $XDG_DATA_HOME/nvim
-ln -sf $SCRIPT_DIR/init.vim $XDG_DATA_HOME/nvim/init.vim
-mkdir -p $XDG_DATA_HOME/kitty
-ln -sf $SCRIPT_DIR/kitty.conf $XDG_DATA_HOME/kitty/kitty.conf
+ln -sf "$SCRIPT_DIR"/.cfg.sh ~/.cfg.sh
+mkdir -p "$XDG_DATA_HOME"/nvim
+ln -sf "$SCRIPT_DIR"/init.vim "$XDG_DATA_HOME"/nvim/init.vim
+mkdir -p "$XDG_DATA_HOME"/kitty
+ln -sf "$SCRIPT_DIR"/kitty.conf "$XDG_DATA_HOME"/kitty/kitty.conf
 
 #-----------Make Sure Apt Up To Date if Available--------
 if [[ $IS_LINUX -eq 1 ]]; then
@@ -62,12 +62,12 @@ touch ~/.zshrc
 touch ~/.bashrc
 touch ~/.prof.sh
 touch ~/.cfg.sh
-write_once "source ~/.cfg.sh" $HOME/.bash_profile		#~/.cfg.sh is shared configuration from github
-write_once "source ~/.prof.sh" $HOME/.bash_profile		#~/.prof.sh is machine-specific configuration (possibly from github)e
-write_once "source ~/.bash_profile" $HOME/.bashrc		#~/.bashrc is bash-specific, may be written by env
-write_once "source ~/.bash_profile" $HOME/.zshrc 		#~/.zshrc is zsh-specific, may be written by env
+write_once "source ~/.cfg.sh" "$HOME"/.bash_profile		#~/.cfg.sh is shared configuration from github
+write_once "source ~/.prof.sh" "$HOME"/.bash_profile		#~/.prof.sh is machine-specific configuration (possibly from github)e
+write_once "source ~/.bash_profile" "$HOME"/.bashrc		#~/.bashrc is bash-specific, may be written by env
+write_once "source ~/.bash_profile" "$HOME"/.zshrc 		#~/.zshrc is zsh-specific, may be written by env
 # ~/.bash_profile may be written by env, is the 'one' file that will always be sourced but not owned by me
-source $HOME/.bash_profile
+source "$HOME"/.bash_profile
 
 # ---------- Simple Utilities ---------------
 conditional_install() {
@@ -114,13 +114,13 @@ fi
 mac_conditional_install nvim "brew install neovim"
 
 if [[ $IS_LINUX -eq 1 ]]; then
-		chmod +x $SCRIPT_DIR/nvim.appimage
+		chmod +x "$SCRIPT_DIR"/nvim.appimage
 		write_once "alias nvim=$SCRIPT_DIR/nvim.appimage" ~/.bash_profile
 fi
 
 
 # nvim package manager install
-if [[ ! -e $XDG_DATA_HOME/nvim/site/autoload/plug.vim ]]; then
+if [[ ! -e "$XDG_DATA_HOME"/nvim/site/autoload/plug.vim ]]; then
 	sh -c 'curl -fLo "$XDG_DATA_HOME"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
 # ag for fzf quick search
