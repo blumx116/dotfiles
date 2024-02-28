@@ -3,7 +3,6 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 IS_MACOS=$(uname -s | grep -q "Darwin" && echo 1 || echo 0)
 IS_LINUX=$(uname -s | grep -q "Linux" && echo 1 || echo 0)
 
-
 # --------- Symlink Configuration Files To Git Repo ---------------
 if [ -z "$XDG_DATA_HOME" ]; then
 		echo "XDG_DATA_HOME not set, setting to $HOME/.config"
@@ -121,13 +120,15 @@ linux_conditional_install "node" "curl -fsSL https://deb.nodesource.com/setup_21
 
 # ------- Install Python, Set Up Neovim Env ---------
 mac_conditional_install "python3.10" "brew install python@3.10"
-linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/ppa; sudo apt install python3.10; sudo apt install python3.10-venv"
+linux_conditional_install "python3.10" "sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.10 && sudo apt install python3.10-venv"
 
 # ---------- Install Tmux ---------------------------
 mac_conditional_install "tmux" "brew install tmux"
 
 python3.10 -m venv ~/.nvim-venv
 . ~/.nvim-venv/bin/activate && python3.10 -m pip install pynvim black isort
+
+linux_conditional_install "libfuse" "sudo apt-get install -y fuse libfuse2"
 
 # --------- Manual Instructions ---------------------
 # Upon nvim bootup
