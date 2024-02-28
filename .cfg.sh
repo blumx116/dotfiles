@@ -1,3 +1,6 @@
+set -o errexit # exit on error
+set -o nounset # exit on access undefined variable
+
 export XDG_DATA_HOME=$HOME/.config
 
 alias v=nvim
@@ -62,3 +65,5 @@ alias bashrc="v ~/.bashrc && re_source"
 alias cfgsh="v ~/.cfg.sh && re_source"
 alias bashprof="v ~/.bash_profile && re_source"
 alias profsh="v ~/.prof.sh && re_source"
+
+

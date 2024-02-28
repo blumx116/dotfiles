@@ -1,3 +1,6 @@
+set -o errexit # exit on error
+set -o nounset # exit on access undefined variable
+
 # ---------- Simple Utilities ---------------
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 IS_MACOS=$(uname -s | grep -q "Darwin" && echo 1 || echo 0)
@@ -119,15 +122,16 @@ linux_conditional_install "fzf" "sudo apt install fzf"
 mac_conditional_install "node" "brew install node"
 linux_conditional_install "node" "curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - && sudo apt-get install nodejs"
 
+# ---------- Install shellcheck -------------------
+mac_conditional_install "shellcheck" "brew install shellcheck"
+linux_conditional_install "shellcheck" "sudo apt install shellcheck"
 
 # ---------- Install Tmux ---------------------------
 mac_conditional_install "tmux" "brew install tmux"
 
 # Install Python 
-
 python3.10 -m venv ~/.nvim-venv
 . ~/.nvim-venv/bin/activate && python3.10 -m pip install pynvim black isort
-
 
 # ------- Install Python, Set Up Neovim Env ---------
 mac_conditional_install "python3.10" "brew install python@3.10"
@@ -138,4 +142,4 @@ source ~/.bash_profile
 
 v +PlugInstall +qall
 v +UpdateRemotePlugins +qall
-v -c "CocInstall coc-json coc-tsserver coc-pyright" +qall
+v -c "CocInstall coc-json coc-tsserver coc-pyright coc-sh" +qall
