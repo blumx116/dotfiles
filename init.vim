@@ -408,3 +408,8 @@ function! s:replace_true_false()
 endfunction
 
 nnoremap <leader>tf :call <SID>replace_true_false()<CR>
+
+nnoremap <leader>lb :%s/\.\zs \ze\(\n\)\@!/\r/g<CR>
+vnoremap <leader>lb :s/\.\zs \ze\(\n\)\@!/\r/g<CR>
+
+
