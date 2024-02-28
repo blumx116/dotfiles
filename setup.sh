@@ -40,6 +40,7 @@ if [[ -z $(grep "PROJECTS_HOME=" "$HOME/.bash_profile") ]]; then
 		if [ -n "$input_path" ]; then
 				escaped_input_path=$(printf "%s\n" "$input_path" | sed 's/[\\"$]/\\&/g')
 				echo "export PROJECTS_HOME=\"$escaped_input_path\"" >> ~/.bash_profile
+				mkdir -p $escaped_input_path
 		else 
 				echo "No path received, exiting"
 				exit
