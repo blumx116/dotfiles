@@ -17,7 +17,7 @@ _CHIP_TO_CLUSTER: dict[str, str] = {
 
 
 class XPKConfig:
-    def __init__(self, chip: str, count: int, slices: Optional[int] = NOne) -> None:
+    def __init__(self, chip: str, count: int, slices: Optional[int] = None) -> None:
         self._chip: str = chip
         self._count: int = count
         self._cluster: str = _CHIP_TO_CLUSTER[chip]
