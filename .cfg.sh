@@ -75,4 +75,9 @@ alias cfgsh="v ~/.cfg.sh && re_source"
 alias bashprof="v ~/.bash_profile && re_source"
 alias profsh="v ~/.prof.sh && re_source"
 
+# from https://docs.google.com/document/d/1VH7-DlorHZFEtoa-jCSY7kSFAqsnF0oIBY-QaYTqcH8/edit?tab=t.0
+# (Google internal document)
+alias hlo="XLA_FLAGS=\"--xla_dump_to=./hlo\""
+
+
 cleanup
