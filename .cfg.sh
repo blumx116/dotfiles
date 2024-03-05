@@ -1,9 +1,22 @@
 set -o errexit # exit on error
 set -o nounset # exit on access undefined variable
 
+cleanup() {
+		set +o errexit
+		set +o nounset
+		set +o xtrace
+}
+
+trap cleanup EXIT
+
 export XDG_DATA_HOME=$HOME/.config
 
 alias v=nvim
+
+if [[ -e ".venv" ]]; then
+		. .venv/bin/activate
+fi
+
 
 f () {
   # fzf with an interrupt handler
@@ -66,4 +79,4 @@ alias cfgsh="v ~/.cfg.sh && re_source"
 alias bashprof="v ~/.bash_profile && re_source"
 alias profsh="v ~/.prof.sh && re_source"
 
-
+cleanup

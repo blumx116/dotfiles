@@ -53,20 +53,18 @@ write_once() {
 
 # add PROJECTS_HOME for usage with `dd` and `d`
 if [[ -z $(grep "PROJECTS_HOME=" "$HOME/.bash_profile") ]]; then
-		echo "Please input the path to be used by \`d\` and \`dd\`"
-		read input_path
+    echo "Please input the path to be used by \`d\` and \`dd\`"
+    read input_path
 
-		if [ -n "$input_path" ]; then
-				escaped_input_path=$input_path
-				# escaped_input_path=$(printf "%s\n" "$input_path" | sed 's/[\\"$]/\\&/g')
-				echo "export PROJECTS_HOME=\"$escaped_input_path\"" >> ~/.bash_profile
-				mkdir -p $escaped_input_path
-		else 
-				echo "No path received, exiting"
-				exit
-		fi
+    if [ -n "$input_path" ]; then
+        expanded_path=$(eval echo "$input_path")
+        echo "export PROJECTS_HOME=\"$expanded_path\"" >> ~/.bash_profile
+        mkdir -p "$expanded_path"
+    else
+        echo "No path received, exiting"
+        exit
+    fi
 fi
-
 
 touch ~/.zshrc
 touch ~/.bashrc
@@ -153,7 +151,7 @@ mac_conditional_install "tmux" "brew install tmux"
 
 # ------- Install Python, Set Up Neovim Env ---------
 mac_conditional_install "python3.11" "brew install python@3.11"
-linux_conditional_install "python3.11" "sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.11-venv"
+linux_conditional_install "python3.11" "sudo add-apt-repository -y ppa:deadsnakes/ppa && sudo apt install -y python3.11-venv"
 linux_conditional_install "libfuse" "sudo apt-get install -y fuse libfuse2"
 
 # Install Python 
@@ -165,3 +163,5 @@ source ~/.bash_profile
 v +PlugInstall +qall
 v +UpdateRemotePlugins +qall
 v -c "CocInstall coc-json coc-tsserver coc-pyright coc-sh"
+
+cleanup
