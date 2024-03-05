@@ -6,5 +6,3 @@ if [[ $IS_LINUX -eq 1 ]]; then
 		mkdir -p "$XDG_DATA_HOME/pip"
 		ln -s "$SCRIPT_DIR/pip.conf" "$XDG_DATA_HOME/pip/pip.conf"
 fi
-
-fi
