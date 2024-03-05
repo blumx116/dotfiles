@@ -64,7 +64,7 @@ d () {
 }
 
 dd () {
-		selected_dir=$(d)
+		d
 		if [[ -n "$selected_dir" ]]; then
 			ini
 			v .
