@@ -56,20 +56,16 @@ ini () {
 }
 
 d () {
-		selected_dir=$(find "$PROJECTS_HOME" -maxdepth 2 -type d | f)
-		if [[ -n "$selected_dir" ]]; then
-			cd "$selected_dir"
-			echo "$selected_dir"
-		fi
+    selected_dir=$(find "$PROJECTS_HOME" -maxdepth 2 -type d | f)
+    if [[ -n "$selected_dir" ]]; then
+        cd "$selected_dir" && echo "$selected_dir"
+    fi
 }
 
 dd () {
-		d
-		if [[ -n "$selected_dir" ]]; then
-			ini
-			v .
-		fi	
+    d && ini && v .
 }
+
 
 alias re_source=". ~/.bash_profile"
 
