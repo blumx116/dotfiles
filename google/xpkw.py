@@ -1,5 +1,7 @@
 import argparse
 import subprocess
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from typing import Optional
 # TODO: unify this with tpugpu.py?
 
@@ -59,7 +61,13 @@ def run_subprocess(command: list[str]) -> str:
         print(e.output)
         raise
 
-def run_cmd_via_xpk(config: XPKConfig, cmd: str, docker_image: str) -> None:
+def _default_name() -> str:
+    return datetime.now(ZoneInfo('US/Pacific')).isoformat(timespec='minutes')
+
+def run_cmd_via_xpk(config: XPKConfig, cmd: str, docker_image: str, name: Optional[str] = None) -> None:
+    if name is None:
+        name = _default_name()
+
     run_subprocess([
         "xpk",
         "workload",
@@ -68,7 +76,7 @@ def run_cmd_via_xpk(config: XPKConfig, cmd: str, docker_image: str) -> None:
         "--base-docker-image",
         docker_image,
         "--workload",
-        "carterblum-first-job", # todo: find better naming scheme
+        name, # todo: find better naming scheme
         *config.tpu_type,
         *config.num_slices,
         *config.zone,
@@ -84,6 +92,7 @@ if __name__ == "__main__":
     parser.add_argument("count", type=int)
     parser.add_argument("command", type=str)
     parser.add_argument("--slices", type=int, default=None)
+    parser.add_argument("--name", type=str, default=None)
     args = parser.parse_args()
 
 
