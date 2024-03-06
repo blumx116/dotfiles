@@ -61,7 +61,7 @@ def run_subprocess(command: list[str]) -> str:
         raise
 
 def _default_name() -> str:
-    time_str: str = datetime.now(ZoneInfo('US/Pacific')).strftime("%Y%m%dT%H%M") 
+    time_str: str = datetime.now(ZoneInfo('US/Pacific')).strftime("%Y%m%d-%H%M") 
     return f"carterblum-{time_str}"
 
 
