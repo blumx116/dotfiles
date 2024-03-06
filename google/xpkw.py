@@ -4,7 +4,6 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from typing import Optional
 # TODO: unify this with tpugpu.py?
-
 PROJECT: str = "tpu-prod-env-multipod"
 
 _CHIP_TO_ZONE: dict[str, str] = {
@@ -62,7 +61,9 @@ def run_subprocess(command: list[str]) -> str:
         raise
 
 def _default_name() -> str:
-    return datetime.now(ZoneInfo('US/Pacific')).isoformat(timespec='minutes')
+    time_str: str = datetime.now(ZoneInfo('US/Pacific')).strftime("%Y%m%dT%H%M") 
+    return f"carterblum-{time_str}"
+
 
 def run_cmd_via_xpk(config: XPKConfig, cmd: str, docker_image: str, name: Optional[str] = None) -> None:
     if name is None:
