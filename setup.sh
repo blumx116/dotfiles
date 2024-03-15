@@ -32,6 +32,7 @@ fi
 
 ln -sf "$SCRIPT_DIR"/.cfg.sh ~/.cfg.sh
 mkdir -p "$XDG_DATA_HOME"/nvim
+mkdir -p "$XDG_DATA_HOME"/nvim/UltiSnips
 ln -sf "$SCRIPT_DIR"/init.vim "$XDG_DATA_HOME"/nvim/init.vim
 mkdir -p "$XDG_DATA_HOME"/kitty
 ln -sf "$SCRIPT_DIR"/kitty.conf "$XDG_DATA_HOME"/kitty/kitty.conf
@@ -161,7 +162,7 @@ shopt -s expand_aliases
 source ~/.bash_profile
 
 v +PlugInstall +qall
-v +UpdateRemotePlugins +qall
 v -c "CocInstall coc-json coc-tsserver coc-pyright coc-sh"
+v +UpdateRemotePlugins +qall
 
 cleanup

@@ -60,6 +60,9 @@ d () {
     if [[ -n "$selected_dir" ]]; then
         cd "$selected_dir" && echo "$selected_dir"
     fi
+	if [[ -e ".vim/workspace.sh" ]]; then
+		source .vim/workspace.sh
+    fi
 }
 
 dd () {
