@@ -37,6 +37,7 @@ ln -sf "$SCRIPT_DIR"/UltiSnips "$XDG_DATA_HOME"/nvim/UltiSnips
 mkdir -p "$XDG_DATA_HOME"/kitty
 ln -sf "$SCRIPT_DIR"/kitty.conf "$XDG_DATA_HOME"/kitty/kitty.conf
 ln -sf "$SCRIPT_DIR"/.gitconfig "$HOME"/.gitconfig
+ln -sf "$SCRIPT_DIR"/.tmux.conf "$HOME"/.tmux.conf
 
 #-----------Make Sure Apt Up To Date if Available--------
 if [[ $IS_LINUX -eq 1 ]]; then
