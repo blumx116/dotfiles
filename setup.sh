@@ -32,8 +32,8 @@ fi
 
 ln -sf "$SCRIPT_DIR"/.cfg.sh ~/.cfg.sh
 mkdir -p "$XDG_DATA_HOME"/nvim
-mkdir -p "$XDG_DATA_HOME"/nvim/UltiSnips
 ln -sf "$SCRIPT_DIR"/init.vim "$XDG_DATA_HOME"/nvim/init.vim
+ln -sf "$SCRIPT_DIR"/UltiSnips "$XDG_DATA_HOME"/nvim/UltiSnips
 mkdir -p "$XDG_DATA_HOME"/kitty
 ln -sf "$SCRIPT_DIR"/kitty.conf "$XDG_DATA_HOME"/kitty/kitty.conf
 
