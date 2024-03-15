@@ -13,9 +13,15 @@ export XDG_DATA_HOME=$HOME/.config
 
 alias v=nvim
 
-if [[ -e ".venv" ]]; then
-		. .venv/bin/activate
-fi
+source_workspace() {
+		if [[ -d ".venv" ]]; then
+				. .venv/bin/activate
+		fi
+		if [[ -e ".vim/workspace.sh" ]]; then
+				source .vim/workspace
+		fi
+}
+source_workspace
 
 
 f () {
@@ -60,9 +66,7 @@ d () {
     if [[ -n "$selected_dir" ]]; then
         cd "$selected_dir" && echo "$selected_dir"
     fi
-	if [[ -e ".vim/workspace.sh" ]]; then
-		source .vim/workspace.sh
-    fi
+	source_workspace
 }
 
 dd () {
