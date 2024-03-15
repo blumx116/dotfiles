@@ -18,7 +18,7 @@ source_workspace() {
 				. .venv/bin/activate
 		fi
 		if [[ -e ".vim/workspace.sh" ]]; then
-				source .vim/workspace
+				source .vim/workspace.sh
 		fi
 }
 source_workspace
