@@ -151,15 +151,28 @@ mac_conditional_install "tmux" "brew install tmux"
 
 
 # ------- Install Python, Set Up Neovim Env ---------
-mac_conditional_install "python3.11" "brew install python@3.11"
-linux_conditional_install "python3.11" "sudo add-apt-repository -y ppa:deadsnakes/ppa && sudo apt install -y python3.11-venv"
-linux_conditional_install "libfuse" "sudo apt-get install -y fuse libfuse2"
+echo "Select the version of python to be used. Alternately, just hit enter to install python3.11 and use that."
+PYTHON_CHOICE=$(read -r)
 
-# Install Python 
-python3.11 -m venv ~/.nvim-venv
-. ~/.nvim-venv/bin/activate && python3.11 -m pip install pynvim black isort
+if [[ "$PYTHON_CHOICE" == "install" ]]; then
+		mac_conditional_install "python3.11" "brew install python@3.11"
+		linux_conditional_install "python3.11" "sudo add-apt-repository -y ppa:deadsnakes/ppa && sudo apt install -y python3.11-venv"
+		PYTHON_VERSION="python3.11"
+else
+		PYTHON_VERSION=$PYTHON_CHOICE
+fi
+
+echo "export DEFAULT_PYTHON=$PYTHON_VERSION" >> ~/.prof.sh
+export DEFAULT_PYTHON="$PYTHON_CHOICE"
+
+
+# ---------- Set Up Neovim Env ----------------------
+$DEFAULT_PYTHON -m venv ~/.nvim-venv
+. ~/.nvim-venv/bin/activate && $DEFAULT_PYTHON -m pip install pynvim black isort
 shopt -s expand_aliases
 source ~/.bash_profile
+
+linux_conditional_install "libfuse" "sudo apt-get install -y fuse libfuse2"
 
 v +PlugInstall +qall
 v -c "CocInstall coc-json coc-tsserver coc-pyright coc-sh"
