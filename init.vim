@@ -35,7 +35,7 @@ augroup FileTypes
 		autocmd BufRead,BufNewFile *.tpp set filetype=cpp
 augroup END
 
-let g:oscyank_term = 'kitty'
+let g:oscyank_term = 'default'
 
 let g:python_host_prog=expand("~/.nvim-venv/bin/python")
 let g:python3_host_prog=expand("~/.nvim-venv/bin/$DEFAULT_PYTHON")

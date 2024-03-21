@@ -1,3 +1,4 @@
+echo "sourcing cfgsh"
 set -o errexit # exit on error
 set -o nounset # exit on access undefined variable
 
@@ -72,6 +73,23 @@ d () {
 dd () {
     d && ini && v .
 }
+
+alias tm="TERM='xterm-256color' tmux"
+
+tmux_split() {
+		# Check if the session exists, discarding output
+		# We can check $? for the exit status (zero for success, non-zero for failure)
+		# source: https://davidltran.com/blog/check-tmux-session-exists-script/
+		if ! tm has-session -t "$1" 2>/dev/null; then
+				tm new-session -d -s "$1"
+				tm split-window -h
+		fi
+		tm -2 attach-session -d -t "$1"
+}
+alias t0="tmux_split 0"
+alias t1="tmux_split 1"
+alias t2="tmux_split 2"
+
 
 
 alias re_source=". ~/.bash_profile"
