@@ -57,7 +57,7 @@ write_once() {
 # add PROJECTS_HOME for usage with `dd` and `d`
 if [[ -z $(grep "PROJECTS_HOME=" "$HOME/.bash_profile") ]]; then
     echo "Please input the path to be used by \`d\` and \`dd\`"
-    read input_path
+    read -r input_path
 
     if [ -n "$input_path" ]; then
         expanded_path=$(eval echo "$input_path")
@@ -154,7 +154,7 @@ mac_conditional_install "tmux" "brew install tmux"
 
 # ------- Install Python, Set Up Neovim Env ---------
 echo "Select the version of python to be used. Alternately, just hit enter to install python3.11 and use that."
-PYTHON_CHOICE=$(read -r)
+read -r PYTHON_CHOICE
 
 if [[ "$PYTHON_CHOICE" == "install" ]]; then
 		mac_conditional_install "python3.11" "brew install python@3.11"
