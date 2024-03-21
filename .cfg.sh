@@ -59,7 +59,7 @@ ini () {
 			fi
 		fi
 		. .venv/bin/activate
-
+		git init
 }
 
 d () {
