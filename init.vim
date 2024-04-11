@@ -412,4 +412,12 @@ nnoremap <leader>tf :call <SID>replace_true_false()<CR>
 nnoremap <leader>lb :%s/\.\zs \ze\(\n\)\@!/\r/g<CR>
 vnoremap <leader>lb :s/\.\zs \ze\(\n\)\@!/\r/g<CR>
 
-
+" this command lets you take the parameters output by black-formatted init function
+" and assign them all as private object variables
+" e.g. 
+" arg1: Callable[int] = None,
+" arg2 = 3
+" ===> 
+" self._arg1: Callable[int] = arg1
+" self._arg2 = arg2
+vnoremap <leader>dc :s/\v(\s+)([A-z_]+)(: [A-z_, \[\]]+)?.*/\1self._\2\3 = \2/g<CR>
