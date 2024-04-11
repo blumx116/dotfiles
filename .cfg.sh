@@ -21,6 +21,11 @@ source_workspace() {
 		if [[ -e ".vim/workspace.sh" ]]; then
 				source .vim/workspace.sh
 		fi
+		if [[ -e "/opt/homebrew/bin/brew" ]]; then
+				# I hate that I have to have this here, but we need to re-add all of the brew paths
+				eval "$(/opt/homebrew/bin/brew shellenv)"
+		fi
+
 }
 source_workspace
 
@@ -51,22 +56,22 @@ ini () {
 		if [[ ! -d ".venv" ]]; then
 			# need to create .venv
 			$DEFAULT_PYTHON -m venv .venv
-			. .venv/bin/activate
+			source_workspace
 			if [[ -e "requirements.txt" ]]; then
 				pip install -r requirements.txt
 			elif [[ -e "requirements.in" ]]; then
 				pip install -r requirements.in
 			fi
 		fi
-		. .venv/bin/activate
 		git init
 }
 
 d () {
-    selected_dir=$(find "$PROJECTS_HOME" -maxdepth 2 -type d | f)
+    selected_dir=$(find "$PROJECTS_HOME" -mindepth 2 -maxdepth 2 -type d | f)
     if [[ -n "$selected_dir" ]]; then
         cd "$selected_dir" && echo "$selected_dir"
     fi
+
 	source_workspace
 }
 
