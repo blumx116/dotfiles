@@ -142,7 +142,8 @@ linux_conditional_install "fzf" "sudo apt install fzf"
 
 # --------- Install Node, Used By Neovim ------------
 mac_conditional_install "node" "brew install node"
-linux_conditional_install "node" "curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - && sudo apt-get install nodejs"
+linux_conditional_install "node" "curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - && sudo apt-get install nodejs npm"
+sudo npm install -g npm
 
 # ---------- Install shellcheck -------------------
 mac_conditional_install "shellcheck" "brew install shellcheck"
@@ -156,7 +157,7 @@ mac_conditional_install "tmux" "brew install tmux"
 echo "Select the version of python to be used. Alternately, just hit enter to install python3.11 and use that."
 read -r PYTHON_CHOICE
 
-if [[ "$PYTHON_CHOICE" == "install" ]]; then
+if [[ "$PYTHON_CHOICE" == "" ]]; then
 		mac_conditional_install "python3.11" "brew install python@3.11"
 		linux_conditional_install "python3.11" "sudo add-apt-repository -y ppa:deadsnakes/ppa && sudo apt install -y python3.11-venv"
 		PYTHON_VERSION="python3.11"
@@ -170,7 +171,7 @@ export DEFAULT_PYTHON="$PYTHON_CHOICE"
 
 # ---------- Set Up Neovim Env ----------------------
 $DEFAULT_PYTHON -m venv ~/.nvim-venv
-. ~/.nvim-venv/bin/activate && $DEFAULT_PYTHON -m pip install pynvim black isort
+. ~/.nvim-venv/bin/activate && $DEFAULT_PYTHON -m pip install pynvim black isort neovim
 shopt -s expand_aliases
 source ~/.bash_profile
 
